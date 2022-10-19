@@ -13,9 +13,8 @@ function Table() {
   } = useContext(Context);
 
   useEffect(() => {
-    // console.log(planetInfo);
     const { filterByName: { name } } = filters;
-    const filterNames = planetInfo.filter((planet) => planet.name.includes(name));
+    const filterNames = renderPlanet.filter((planet) => planet.name.includes(name));
     if (name.length > 0) {
       setRenderPlanet(filterNames);
     } else {
@@ -27,11 +26,11 @@ function Table() {
     const { column, comparison, value } = filterByNumericValues;
     switch (comparison) {
     case 'maior que':
-      return planetInfo.filter((planet) => Number(planet[column]) > Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) > Number(value));
     case 'menor que':
-      return planetInfo.filter((planet) => Number(planet[column]) < Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) < Number(value));
     case 'igual a':
-      return planetInfo.filter((planet) => Number(planet[column]) === Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) === Number(value));
     default:
       return planetInfo;
     }
@@ -96,13 +95,12 @@ function Table() {
           Filtrar
         </button>
       </form>
-
       <table>
         <thead>
           <tr>
             {planetInfo.length > 0 && (
-              Object.keys(planetInfo[0]).map((head) => (
-                <th key={ head }>{head}</th>
+              Object.keys(planetInfo[0]).map((event) => (
+                <th key={ event }>{event}</th>
               ))
             )}
           </tr>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import Context from './Context';
@@ -13,12 +13,14 @@ function ProviderPlanets({ children }) {
   const [filterByNumericValues, setFilterByNumericValues] = useState(
     { column: 'population', comparison: 'maior que', value: '0' },
   );
+  const [handleFilter, setHandleFilter] = useState([]);
 
   useEffect(() => {
     const planetsAPI = async () => {
       const response = await fetchAPI();
       console.log(response);
       setPlanetInfo(response);
+      setRenderPlanet(response);
     };
     planetsAPI();
   }, [setPlanetInfo]);
@@ -33,8 +35,8 @@ function ProviderPlanets({ children }) {
     setFilterByNumericValues({ ...filterByNumericValues, [name]: value });
   };
 
-  const value = {
-    setPlanetInfo,
+  const value = useMemo(() => ({
+    planetInfo,
     renderPlanet,
     setRenderPlanet,
     handleName,
@@ -43,10 +45,12 @@ function ProviderPlanets({ children }) {
     setFilters,
     filterByNumericValues,
     setFilterByNumericValues,
-  };
+    handleFilter,
+    setHandleFilter,
+  }), [planetInfo, renderPlanet, filters, handleFilter]);
 
   return (
-    <Context.Provider value={ {...value, planetInfo} }>
+    <Context.Provider value={ value }>
       {children}
     </Context.Provider>
   );
