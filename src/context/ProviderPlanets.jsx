@@ -15,6 +15,14 @@ function ProviderPlanets({ children }) {
   );
   const [handleFilter, setHandleFilter] = useState([]);
 
+  const [handleColumn, setHandleColumn] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   useEffect(() => {
     const planetsAPI = async () => {
       const response = await fetchAPI();
@@ -47,8 +55,10 @@ function ProviderPlanets({ children }) {
     setFilterByNumericValues,
     handleFilter,
     setHandleFilter,
-  }), [planetInfo, renderPlanet,
-    handleName, handleValues, filters, filterByNumericValues, handleFilter]);
+    handleColumn,
+    setHandleColumn,
+  }), [planetInfo, renderPlanet, handleName,
+    handleValues, filters, filterByNumericValues, handleFilter, handleColumn]);
 
   return (
     <Context.Provider value={ value }>

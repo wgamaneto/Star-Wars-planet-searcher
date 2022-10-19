@@ -10,6 +10,11 @@ function Table() {
     handleValues,
     filters,
     filterByNumericValues,
+    setFilterByNumericValues,
+    handleFilter,
+    setHandleFilter,
+    handleColumn,
+    setHandleColumn,
   } = useContext(Context);
 
   useEffect(() => {
@@ -21,6 +26,17 @@ function Table() {
       setRenderPlanet(planetInfo);
     }
   }, [filters]);
+
+  useEffect(() => {
+    if (handleFilter.length > 0) {
+      const newColumn = handleColumn
+        .filter((column) => column !== handleFilter[handleFilter.length - 1].column);
+      setFilterByNumericValues(
+        { column: newColumn[0], comparison: 'maior que', value: '0' },
+      );
+      setHandleColumn(newColumn);
+    }
+  }, [handleFilter]);
 
   const handleComparison = () => {
     const { column, comparison, value } = filterByNumericValues;
@@ -38,8 +54,8 @@ function Table() {
 
   const filterValues = () => {
     const planetsFilterByValue = handleComparison();
-    console.log(planetsFilterByValue);
     setRenderPlanet(planetsFilterByValue);
+    setHandleFilter([...handleFilter, filterByNumericValues]);
   };
 
   return (
@@ -49,8 +65,8 @@ function Table() {
           data-testid="name-filter"
           id="filterByName"
           name="filterByName"
-          value={ filters.filterByName.name }
           type="text"
+          value={ filters.filterByName.name }
           onChange={ (event) => handleName(event) }
         />
         <select
@@ -60,11 +76,14 @@ function Table() {
           value={ filterByNumericValues.column }
           onChange={ (event) => handleValues(event) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {handleColumn.map((element) => (
+            <option
+              key={ element }
+              value={ element }
+            >
+              {element}
+            </option>
+          ))}
         </select>
 
         <select
@@ -96,6 +115,15 @@ function Table() {
           Filtrar
         </button>
       </form>
+      <div>
+        {handleFilter.length > 0 && (
+          handleFilter.map((filter, index) => (
+            <p key={ index }>
+              {`${filter.column} ${filter.comparison} ${filter.value}`}
+            </p>
+          ))
+        )}
+      </div>
       <table>
         <thead>
           <tr>
