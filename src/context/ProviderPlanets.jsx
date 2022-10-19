@@ -33,6 +33,7 @@ function ProviderPlanets({ children }) {
   const handleValues = ({ target }) => {
     const { value, name } = target;
     setFilterByNumericValues({ ...filterByNumericValues, [name]: value });
+    console.log(value, name);
   };
 
   const value = useMemo(() => ({
@@ -47,7 +48,8 @@ function ProviderPlanets({ children }) {
     setFilterByNumericValues,
     handleFilter,
     setHandleFilter,
-  }), [planetInfo, renderPlanet, filters, handleFilter]);
+  }), [planetInfo, renderPlanet,
+    handleName, handleValues, filters, filterByNumericValues, handleFilter]);
 
   return (
     <Context.Provider value={ value }>

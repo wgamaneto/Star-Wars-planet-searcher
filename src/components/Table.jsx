@@ -26,11 +26,11 @@ function Table() {
     const { column, comparison, value } = filterByNumericValues;
     switch (comparison) {
     case 'maior que':
-      return renderPlanet.filter((planet) => Number(planet[column]) > Number(value));
+      return planetInfo.filter((planet) => Number(planet[column]) > Number(value));
     case 'menor que':
-      return renderPlanet.filter((planet) => Number(planet[column]) < Number(value));
+      return planetInfo.filter((planet) => Number(planet[column]) < Number(value));
     case 'igual a':
-      return renderPlanet.filter((planet) => Number(planet[column]) === Number(value));
+      return planetInfo.filter((planet) => Number(planet[column]) === Number(value));
     default:
       return planetInfo;
     }
@@ -38,6 +38,7 @@ function Table() {
 
   const filterValues = () => {
     const planetsFilterByValue = handleComparison();
+    console.log(planetsFilterByValue);
     setRenderPlanet(planetsFilterByValue);
   };
 
@@ -71,7 +72,7 @@ function Table() {
           name="comparison"
           id="comparison"
           value={ filterByNumericValues.comparison }
-          onChange={ (event) => handleName(event) }
+          onChange={ (event) => handleValues(event) }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
