@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Context from './Context';
@@ -33,7 +33,6 @@ function ProviderPlanets({ children }) {
   const handleValues = ({ target }) => {
     const { value, name } = target;
     setFilterByNumericValues({ ...filterByNumericValues, [name]: value });
-    console.log(value, name);
   };
 
   const value = useMemo(() => ({
