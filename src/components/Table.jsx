@@ -42,11 +42,11 @@ function Table() {
     const { column, comparison, value } = filterByNumericValues;
     switch (comparison) {
     case 'maior que':
-      return planetInfo.filter((planet) => Number(planet[column]) > Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) > Number(value));
     case 'menor que':
-      return planetInfo.filter((planet) => Number(planet[column]) < Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) < Number(value));
     case 'igual a':
-      return planetInfo.filter((planet) => Number(planet[column]) === Number(value));
+      return renderPlanet.filter((planet) => Number(planet[column]) === Number(value));
     default:
       return planetInfo;
     }
