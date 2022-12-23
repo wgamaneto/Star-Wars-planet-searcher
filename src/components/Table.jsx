@@ -27,17 +27,6 @@ function Table() {
     }
   }, [filters]);
 
-  useEffect(() => {
-    if (handleFilter.length > 0) {
-      const newColumn = handleColumn
-        .filter((column) => column !== handleFilter[handleFilter.length - 1].column);
-      setFilterByNumericValues(
-        { column: newColumn[0], comparison: 'maior que', value: '0' },
-      );
-      setHandleColumn(newColumn);
-    }
-  }, [handleFilter]);
-
   const handleComparison = () => {
     const { column, comparison, value } = filterByNumericValues;
     switch (comparison) {
@@ -52,11 +41,29 @@ function Table() {
     }
   };
 
-  const filterValues = () => {
-    const planetsFilterByValue = handleComparison();
-    setRenderPlanet(planetsFilterByValue);
-    setHandleFilter([...handleFilter, filterByNumericValues]);
+  const filterByValues = () => {
+    let filterNames = [...planetInfo];
+    handleFilter
+      .forEach((filter) => {
+        filterNames = filterNames
+          .filter((planet) => (
+            handleComparison(filter.comparison, +planet[filter.column], +filter.value)
+          ));
+      });
+    setPlanetsToRender(filterNames);
   };
+
+  useEffect(() => {
+    if (handleFilter.length > 0) {
+      filterByValues();
+      const newColumn = handleColumn
+        .filter((column) => column !== handleFilter[handleFilter.length - 1].column);
+      setFilterByNumericValues(
+        { column: newColumn[0], comparison: 'maior que', value: '0' },
+      );
+      setHandleColumn(newColumn);
+    }
+  }, [handleFilter]);
 
   return (
     <div>
@@ -110,7 +117,7 @@ function Table() {
         <button
           data-testid="button-filter"
           type="button"
-          onClick={ filterValues }
+          onClick={ () => setFiltersUsed([...filtersUsed, filterByNumericValues]) }
         >
           Filtrar
         </button>
